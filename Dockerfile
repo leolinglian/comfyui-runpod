@@ -14,12 +14,16 @@ RUN pip install --upgrade pip setuptools wheel
 WORKDIR /comfyui
 RUN git clone https://github.com/comfyanonymous/ComfyUI.git . && git checkout master
 
+# 安装 PyTorch
 RUN pip install --no-cache-dir \
     torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 \
     --index-url https://download.pytorch.org/whl/cu118
 
+# 安装 ComfyUI 依赖
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir runpod>=1.5.0 xformers==0.0.23
+
+# 只安装 RunPod，不装 xformers
+RUN pip install --no-cache-dir runpod>=1.5.0
 
 COPY handler_simple.py /comfyui/handler.py
 COPY start.sh /start.sh
